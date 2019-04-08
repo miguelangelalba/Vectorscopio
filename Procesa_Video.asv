@@ -13,7 +13,7 @@ Subsampling=422; % 422  420
 BitDepth=8;  % 8; % 10;
 FrameRate=25; % 25 % 50
 NumFrames= 220; %220
-resize_matrix = create_resize_matrix(Cols);
+resize_matrix = create_resize_matrix(Rows);
 
 
 % Stream YCbCr de entrada
@@ -35,16 +35,12 @@ end
 [Y, Cb, Cr]=Read_YUV(FileIDIn, Rows, Cols, YSize, CbCrSize, BitDepth);
 
 % Visualizo la lY
-%figure;
-%imshow(Y,[0 2^(BitDepth)-1],'InitialMagnification','fit');
-title('Frame IN');
-[Cb4, Cr4] = cbcr2tocbcr4(Cb,Cr,resize_matrix);
 figure;
 imshow(Y,[0 2^(BitDepth)-1],'InitialMagnification','fit');
-figure;
-imshow(Cb4,[0 2^(BitDepth)-1],'InitialMagnification','fit');
-figure;
-imshow(Cr4,[0 2^(BitDepth)-1],'InitialMagnification','fit');
+title('Frame IN');
+Cb = Cb
+[Cr4, Cb4] = cbcr2tocbcr4(Cb,resize_matrix);
+
 
 % Proceso el video
 
@@ -85,22 +81,19 @@ function [Y, Cb, Cr] = Read_YUV(FileID, filas, columnas, YSize, CbCrSize, BitDep
         Cr=Cr';
 end
 % --------------------------------------------------------------------------
-function [Cb4,Cr4] = cbcr2tocbcr4(Cb,Cr,resize_matrix)
-    Cb4 = [];
-    Cr4 = [];
+function [Cb4,Cr4] = cbcr2tocbcr4(Cb,resize_matrix)
+    Vlinecb4 =[];
+    Vlinecr4
     for i=1:size(Cb,1)
         %Saco los vectores de la matriz y sonreescribo dicha variable
         Vlinecb = Cb(i,:);
         Vlinecr = Cr(i,:);
-        Cb4 = [Cb4;interpola2to4(Vlinecb,resize_matrix)];
-        Cr4 = [Cr4;interpola2to4(Vlinecr,resize_matrix)];
+        
+        disp(Vline);
+        Vlinecr4[i] = interpola2to4(Vlinecb,resize_matrix);
+        Vlinec4[i] = interpola2to4(Vlinecr,resize_matrix);
         i = i+1;
     end
-    Cb4 = uint8(Cb4);
-    Cr4 = uint8(Cr4);
-    
-
-
     % Esto es para probar no tine nada que ver con el pg
 
 % --------------------------------------------------------------------------
