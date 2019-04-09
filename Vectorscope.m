@@ -71,8 +71,9 @@ for m = 1:Cols %720
     G(n,m) = rgb_result(2,1);
     B(n,m) = rgb_result(3,1);
     n = n+1;
-
+  end
   m = m+1;
+end 
 
 %aquí ya deberían estar las matrices RGB rellenas. Para conseguir la matriz combinada se hace esto siguiente
 
