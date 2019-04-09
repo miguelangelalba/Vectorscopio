@@ -14,8 +14,8 @@ function [Cb4,Cr4] = cbcr2tocbcr4(Cb,Cr)
         Cr4 = [Cr4;interpola2to4(Vlinecr,resize_matrix)];
         i = i+1;
     end
-    Cb4 = uint8(Cb4);
-    Cr4 = uint8(Cr4);
+    Cb4 = uint16(Cb4);
+    Cr4 = uint16(Cr4);
 
 
 function Vline4 = interpola2to4(Vline,resize_matrix)
