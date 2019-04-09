@@ -13,6 +13,7 @@ Subsampling=422; % 422  420
 BitDepth=8;  % 8; % 10;
 FrameRate=25; % 25 % 50
 NumFrames= 220; %220
+BitDepth_Display = 10;
 
 
 % Stream YCbCr de entrada
@@ -40,11 +41,13 @@ end
 %title('Frame IN');
 [Cb4, Cr4] = cbcr2tocbcr4(Cb,Cr);
 figure;
-imshow(Y,[0 2^(BitDepth)-1],'InitialMagnification','fit');
+imshow(Y,[0 2^(BitDepth_Display)-1],'InitialMagnification','fit');
 figure;
-imshow(Cb4,[0 2^(BitDepth)-1],'InitialMagnification','fit');
+imshow(Cb4,[0 2^(BitDepth_Display)-1],'InitialMagnification','fit');
 figure;
-imshow(Cr4,[0 2^(BitDepth)-1],'InitialMagnification','fit');
-
+imshow(Cr4,[0 2^(BitDepth_Display)-1],'InitialMagnification','fit');
 % Proceso el video
+
+rgb_image = ycbcr_to_rgb(Y, Cb4, Cr4);
+imshow(rgb_image,[0 2^(BitDepth_Display)-1],'InitialMagnification','fit');
 fclose(FileIDIn);
