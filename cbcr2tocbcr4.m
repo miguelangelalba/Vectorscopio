@@ -3,7 +3,7 @@ Cols= 720;
 resize_matrix = create_resize_matrix(Cols);
 
 
-function [Cb4,Cr4] = cbcr2tocbcr4(Cb,Cr,resize_matrix)
+function [Cb4,Cr4] = cbcr2tocbcr4(Cb,Cr)
     Cb4 = [];
     Cr4 = [];
     for i=1:size(Cb,1)

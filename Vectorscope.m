@@ -13,7 +13,6 @@ Subsampling=422; % 422  420
 BitDepth=8;  % 8; % 10;
 FrameRate=25; % 25 % 50
 NumFrames= 220; %220
-resize_matrix = create_resize_matrix(Cols);
 
 
 % Stream YCbCr de entrada
@@ -32,13 +31,14 @@ if Subsampling==422
 end
 
 % Leo el primer frame de video
-[Y, Cb, Cr]=Read_YUV(FileIDIn, Rows, Cols, YSize, CbCrSize, BitDepth);
+
+[Y, Cb, Cr]=Read_YUV_422_10b(FileIDIn, Rows, Cols, YSize, CbCrSize, BitDepth);
 
 % Visualizo la lY
 %figure;
 %imshow(Y,[0 2^(BitDepth)-1],'InitialMagnification','fit');
 title('Frame IN');
-[Cb4, Cr4] = cbcr2tocbcr4(Cb,Cr,resize_matrix);
+[Cb4, Cr4] = cbcr2tocbcr4(Cb,Cr);
 figure;
 imshow(Y,[0 2^(BitDepth)-1],'InitialMagnification','fit');
 figure;
