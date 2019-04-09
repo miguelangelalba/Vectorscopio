@@ -37,7 +37,7 @@ end
 % Visualizo la lY
 %figure;
 %imshow(Y,[0 2^(BitDepth)-1],'InitialMagnification','fit');
-title('Frame IN');
+%title('Frame IN');
 [Cb4, Cr4] = cbcr2tocbcr4(Cb,Cr);
 figure;
 imshow(Y,[0 2^(BitDepth)-1],'InitialMagnification','fit');
