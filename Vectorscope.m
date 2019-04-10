@@ -40,14 +40,23 @@ end
 %imshow(Y,[0 2^(BitDepth)-1],'InitialMagnification','fit');
 %title('Frame IN');
 [Cb4, Cr4] = cbcr2tocbcr4(Cb,Cr);
-figure;
-imshow(Y,[0 2^(BitDepth_Display)-1],'InitialMagnification','fit');
-figure;
-imshow(Cb4,[0 2^(BitDepth_Display)-1],'InitialMagnification','fit');
-figure;
-imshow(Cr4,[0 2^(BitDepth_Display)-1],'InitialMagnification','fit');
+%figure;
+%imshow(Y,[0 2^(BitDepth_Display)-1],'InitialMagnification','fit');
+%figure;
+%imshow(Cb4,[0 2^(BitDepth_Display)-1],'InitialMagnification','fit');
+%figure;
+%imshow(Cr4,[0 2^(BitDepth_Display)-1],'InitialMagnification','fit');
 % Proceso el video
 
-rgb_image = ycbcr_to_rgb(Y, Cb4, Cr4);
-imshow(rgb_image,[0 2^(BitDepth_Display)-1],'InitialMagnification','fit');
+[rgb_image, R, G, B] = ycbcr_to_rgb(Y, Cb4, Cr4);
+
+imshow(R,[0 2^(BitDepth_Display)-1],'InitialMagnification','fit');
+title('R COMPONENT');
+figure, imshow(G,[0 2^(BitDepth_Display)-1],'InitialMagnification','fit');
+title('G COMPONENT');
+figure, imshow(B,[0 2^(BitDepth_Display)-1],'InitialMagnification','fit');
+title('B COMPONENT');
+
+%imtool(rgb_image);
+
 fclose(FileIDIn);

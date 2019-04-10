@@ -1,4 +1,4 @@
-function [rgb_image] = ycbcr_to_rgb(Y, Cb4, Cr4)
+function [rgb_image, R, G, B] = ycbcr_to_rgb(Y, Cb4, Cr4)
 
 Cols = 720;
 Rows = 576;
@@ -21,7 +21,7 @@ rgb_result = [];
 for m = 1:Cols %720
   for n = 1:Rows  %576
 
-    rgb_result = conversion_matrix * [Y(n,m);Cb4(n,m);Cr4(n,m)]; %Esto da una matriz [R; G; B]
+    rgb_result = conversion_matrix * [Y(n,m);Cb4(n,m)-512;Cr4(n,m)-512]; %Esto da una matriz [R; G; B]
     R(n,m) = uint16(rgb_result(1,1));
     G(n,m) = uint16(rgb_result(2,1));
     B(n,m) = uint16(rgb_result(3,1));
@@ -30,6 +30,9 @@ for m = 1:Cols %720
   m = m+1;
 end 
 
+R = uint16(R);
+G = uint16(G);
+B = uint16(B);
 %aquí ya deberían estar las matrices RGB rellenas. Para conseguir la matriz combinada se hace esto siguiente
 
 rgb_image = cat(3, R, G, B);
