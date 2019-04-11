@@ -16,6 +16,7 @@ python setup.py install
 Matplotlib:
 
 python -m pip install -U pip
+
 python -m pip install -U matplotlib
 
 Ir a la carpeta donde Python está instalado y copiar todos los contenidos de la carpeta tcl
