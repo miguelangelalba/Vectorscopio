@@ -1,4 +1,4 @@
-function Procesa_Video(StreamName)
+function [rgb_image, R, G, B] = Procesa_Video(StreamName)
 % ETSI Telecomunicacion
 % Universidad Rey Juan Carlos
 % Lee una secuejncia de video YCbCr Planar
@@ -50,12 +50,12 @@ end
 
 [rgb_image, R, G, B] = ycbcr_to_rgb(Y, Cb4, Cr4);
 
-imshow(R,[0 2^(BitDepth_Display)-1],'InitialMagnification','fit');
-title('R COMPONENT');
-figure, imshow(G,[0 2^(BitDepth_Display)-1],'InitialMagnification','fit');
-title('G COMPONENT');
-figure, imshow(B,[0 2^(BitDepth_Display)-1],'InitialMagnification','fit');
-title('B COMPONENT');
+%imshow(R,[0 2^(BitDepth_Display)-1],'InitialMagnification','fit');
+%title('R COMPONENT');
+%figure, imshow(G,[0 2^(BitDepth_Display)-1],'InitialMagnification','fit');
+%title('G COMPONENT');
+%figure, imshow(B,[0 2^(BitDepth_Display)-1],'InitialMagnification','fit');
+%title('B COMPONENT');
 
 %imtool(rgb_image);
 
