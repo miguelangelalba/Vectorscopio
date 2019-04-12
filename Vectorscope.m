@@ -1,4 +1,4 @@
-function [rgb_image, R, G, B] = Procesa_Video(StreamName)
+function [rgb_image, R, G, B, Y, Cb4, Cr4] = Procesa_Video(StreamName)
 % ETSI Telecomunicacion
 % Universidad Rey Juan Carlos
 % Lee una secuejncia de video YCbCr Planar

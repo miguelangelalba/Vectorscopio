@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 eng = matlab.engine.start_matlab()
 
-rgb_image, R, G, B = eng.Vectorscope('F1_720x576_P422_8b_25Hz.yuv', nargout=4)
+rgb_image, R, G, B, Y, Cb4, Cr4 = eng.Vectorscope('F1_720x576_P422_8b_25Hz.yuv', nargout=7)
 
 # Fixing random state for reproducibility
 np.random.seed(19680801)
