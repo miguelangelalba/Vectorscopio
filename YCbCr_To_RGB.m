@@ -4,9 +4,9 @@ Cols = 720;
 Rows = 576;
 %Ahora tenemos los vectores de Y, Cb, Cr de dimensiones 720 columnas y 576 filas. Convertir a RGB
 %Para SD, la conversión de YCbCr a RGB es una matriz específica
-% [R] = [1  0      1.402]
-% [G] = [1 -0.344 -0.714]
-% [B] = [1  1.772  0    ]
+% [R] = [1  0      1.402] [Y]
+% [G] = [1 -0.344 -0.714] [Cb - 512]
+% [B] = [1  1.772  0    ] [Cr - 512]
 Y = double(Y);
 Cb4 = double(Cb4);
 Cr4 = double(Cr4);
