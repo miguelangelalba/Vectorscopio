@@ -1,12 +1,9 @@
-function WriteSDI(StreamName)
-% ETSI Telecomunicacion
-% Universidad Rey Juan Carlos
-% Lee una trama de Video igital Serie SDI
-% ReadSDI('Stream1_TypeA.sdi');
+function sdi_reader(StreamName)
 
+%esta función encuentra el primer 3FF. Hay que mejorarlo para ver si es un
+%EAV o un SAV
 close('all');
 
-% Stream SDI de entrada
 FileIDIn = fopen(StreamName,'r');
 if FileIDIn <0
     fprintf('***** Error al abrir el Stream SDI %s *****\n', StreamName);
@@ -14,7 +11,6 @@ if FileIDIn <0
     return;
 end
 
-%inicializo las variables
 Count=0;
 DataWord=0;
 TRS=uint16(zeros(1,4));
@@ -25,7 +21,6 @@ while (DataWord~=1023)
     Count=Count+1;
 end
 
-% Compruebo que es un TRS
 TRS(1,1)=DataWord;
 TRS(1,2)=uint16(fread(FileIDIn, 1, 'uint16'));
 TRS(1,3)=uint16(fread(FileIDIn, 1, 'uint16'));
@@ -35,19 +30,19 @@ else
     fprintf('\n- El Primer TRS encontrado esta a %d words \n', Count);
 end
 
-% Compruebo si es un EAV o un SAV
-
-
-% Si es un EAV me pongo a buscar de nuevo TRS
-
-% Si es un SAV leo la primera linea de video, pero no se su longitud
-% Leo hasta encontrarme un TRS
-
-
-
+read_from_EAV(FileIDIn)
 
 fclose(FileIDIn);
 
-% figure;
-% imshow(CbYCrY,[0 1023],'InitialMagnification','fit');
-% title('Frame IN');
+function read_from_EAV(FileIDIn)
+
+%se tira el HANC y el SAV
+for i = 1:285
+    data_word = uint16(fread(FileIDIn, 1, 'uint16'));
+ 
+end
+
+%A partir de aquí, la siguiente muestra es video activo , con el orden Cb0,
+%Y0, Cr0, Y1, Cb2, Y2
+
+
