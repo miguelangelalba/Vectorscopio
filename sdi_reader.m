@@ -1,4 +1,4 @@
-function sdi_reader(StreamName)
+function [Y, Cb, Cr] = sdi_reader(StreamName)
 
 %abre el fichero e invoca a leer linea de video todas las veces necesarias
 close('all');
@@ -27,6 +27,8 @@ fclose(FileIDIn);
 
 function [Y, Cb, Cr] = read_line_from_SDI(FileIDIn)
 
+%esta funcion lee una linea de video SDI
+
 Count=0;
 DataWord=0;
 TRS=uint16(zeros(1,4));
@@ -46,16 +48,28 @@ if TRS(1,1:3)~= TRSHeader
     %fprintf('\n- El Primer TRS encontrado esta a %d words \n', Count);
 end
 
-%El formato de video nativo de SD-SDI es 4:2:2
-Y = [];
-Cb = [];
-Cr = [];
+%del XYZ, hay que comprobar que la linea es de video activo.
+%se convierte el XYZ a binario para inspeccionar si la linea es video
+%activo o si vien es borrado vertical
+XYZ = uint16(fread(FileIDIn, 1, 'uint16'));
+XYZ_bin = de2bi(XYZ, 'left-msb');
 
+%El formato de video nativo de SD-SDI es 4:2:2
 %se tira el HANC y el SAV
-for i = 1:285
+for i = 1:284
     word_to_discard = uint16(fread(FileIDIn, 1, 'uint16'));
  
 end
+
+%Desde aqui, se lee la informacion de luma y croma
+[Y, Cb, Cr] = read_ycbcr(FileIDIn);
+
+
+function [Y, Cb, Cr] = read_ycbcr(FileIDIn)
+
+Y = [];
+Cb = [];
+Cr = [];
 
 for counter = 1:360
     
