@@ -30,11 +30,16 @@ else
     fprintf('\n- El Primer TRS encontrado esta a %d words \n', Count);
 end
 
-read_from_EAV(FileIDIn)
+%esto consigue una linea de video
+[Y, Cb, Cr] = read_line_from_EAV(FileIDIn);
 
 fclose(FileIDIn);
 
-function read_from_EAV(FileIDIn)
+function [Y, Cb, Cr] = read_line_from_EAV(FileIDIn)
+%El formato de video nativo de SD-SDI es 4:2:2
+Y = [];
+Cb = [];
+Cr = [];
 
 %se tira el HANC y el SAV
 for i = 1:285
@@ -42,7 +47,21 @@ for i = 1:285
  
 end
 
-%A partir de aquí, la siguiente muestra es video activo , con el orden Cb0,
-%Y0, Cr0, Y1, Cb2, Y2
+for counter = 1:360
+    
+    Cb0 = uint16(fread(FileIDIn, 1, 'uint16'));
+    Cb = [Cb, Cb0];
+    Y0 = uint16(fread(FileIDIn, 1, 'uint16'));
+    Y = [Y, Y0];
+    Cr0 = uint16(fread(FileIDIn, 1, 'uint16'));
+    Cr = [Cr, Cr0];
+    Y1 = uint16(fread(FileIDIn, 1, 'uint16'));
+    Y = [Y, Y1];
+    
+end
+
+
+
+
 
 
