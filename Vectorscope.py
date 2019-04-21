@@ -18,7 +18,7 @@ def get_video_frame(video_width, video_height):
 
     eng = matlab.engine.start_matlab()
 
-    rgb_image, R, G, B, Y, Cb4, Cr4 = eng.Vectorscope('F1_720x576_P422_8b_25Hz.yuv', nargout=7)
+    Y, Cb4, Cr4 = eng.sdi_reader('F1_720x576_P422_8b_25Hz.yuv', nargout=7)
 
 #Cr is the Y axis
 #Cb is the X axis
