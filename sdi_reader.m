@@ -14,18 +14,22 @@ Y = [];
 Cb = [];
 Cr = [];
 %esto obtiene las 576 lineas de video en SD
-for x = 1:576
-    [new_Y, new_Cb, new_Cr] = read_line_from_SDI(FileIDIn);
-    Y = [Y;new_Y];
-    Cb = [Cb;new_Cb];
-    Cr = [Cr;new_Cr];
+
+for x = 1:625
+    
+    read_line_from_SDI(FileIDIn);
+    
+    %[new_Y, new_Cb, new_Cr] = read_line_from_SDI(FileIDIn);
+    %Y = [Y;new_Y];
+    %Cb = [Cb;new_Cb];
+    %Cr = [Cr;new_Cr];
 end
 
 %en este punto, se tienen las matrices de Y, Cb y Cr, sin interpolar
 
 fclose(FileIDIn);
 
-function [Y, Cb, Cr] = read_line_from_SDI(FileIDIn)
+function read_line_from_SDI(FileIDIn)
 
 %esta funcion lee una linea de video SDI
 
@@ -83,7 +87,6 @@ for counter = 1:360
     Y = [Y, Y1];
     
 end
-
 
 
 
