@@ -13,32 +13,52 @@ end
 Y = [];
 Cb = [];
 Cr = [];
-%esto obtiene las 576 lineas de video en SD
 
+[Y, Cb, Cr] = read_video_frame(FileIDIn);
+
+figure;
+imshow(Y,[0 2^(10)-1],'InitialMagnification','fit');
+
+fclose(FileIDIn);
+
+
+function [Y, Cb, Cr] = read_video_frame(FileIDIn)
 total_lines_video = 0;
 total_lines_vsync = 0;
 
+Y = [];
+Cb = [];
+Cr = [];
+
+
 for x = 1:625
     
-    [video, vsync] = read_line_from_SDI(FileIDIn);
+    [video, vsync, new_Y, new_Cb, new_Cr] = read_line_from_SDI(FileIDIn);
     total_lines_video = total_lines_video + video;
     total_lines_vsync = total_lines_vsync + vsync;
-    
+    if isempty(new_Y) ~= 1
+        Y = [Y;new_Y];
+        Cb = [Cb;new_Cb];
+        Cr = [Cr;new_Cr];
+    end
     %[new_Y, new_Cb, new_Cr] = read_line_from_SDI(FileIDIn);
     %Y = [Y;new_Y];
     %Cb = [Cb;new_Cb];
     %Cr = [Cr;new_Cr];
 end
+fprintf("Finished reading video frame");
 
-%en este punto, se tienen las matrices de Y, Cb y Cr, sin interpolar
 
-fclose(FileIDIn);
 
-function [video, vsync] = read_line_from_SDI(FileIDIn)
+function [video, vsync, Y, Cb, Cr] = read_line_from_SDI(FileIDIn)
 
 %esta funcion lee una linea de video SDI
 video = 0;
 vsync = 0;
+
+Y = [];
+Cb = [];
+Cr = [];
 
 Count=0;
 DataWord=0;
@@ -94,29 +114,40 @@ for i = 1:284
  
 end
 
-%Desde aqui, se lee la informacion de luma y croma
-[Y, Cb, Cr] = read_ycbcr(FileIDIn);
+%Desde aqui, se lee la informacion de luma y croma o se tira el vanc
+[Y, Cb, Cr] = read_payload(FileIDIn, video);
 
 
-function [Y, Cb, Cr] = read_ycbcr(FileIDIn)
+function [Y, Cb, Cr] = read_payload(FileIDIn, is_active)
 
 Y = [];
 Cb = [];
 Cr = [];
 
-for counter = 1:360
+if is_active == 1
+    for counter = 1:360
     
-    Cb0 = uint16(fread(FileIDIn, 1, 'uint16'));
-    Cb = [Cb, Cb0];
-    Y0 = uint16(fread(FileIDIn, 1, 'uint16'));
-    Y = [Y, Y0];
-    Cr0 = uint16(fread(FileIDIn, 1, 'uint16'));
-    Cr = [Cr, Cr0];
-    Y1 = uint16(fread(FileIDIn, 1, 'uint16'));
-    Y = [Y, Y1];
+        Cb0 = uint16(fread(FileIDIn, 1, 'uint16'));
+        Cb = [Cb, Cb0];
+        Y0 = uint16(fread(FileIDIn, 1, 'uint16'));
+        Y = [Y, Y0];
+        Cr0 = uint16(fread(FileIDIn, 1, 'uint16'));
+        Cr = [Cr, Cr0];
+        Y1 = uint16(fread(FileIDIn, 1, 'uint16'));
+        Y = [Y, Y1];
     
+    end
+else
+    
+    for counter = 1:360
+    
+        word_to_discard = uint16(fread(FileIDIn, 1, 'uint16'));
+        word_to_discard = uint16(fread(FileIDIn, 1, 'uint16'));
+        word_to_discard = uint16(fread(FileIDIn, 1, 'uint16'));
+        word_to_discard = uint16(fread(FileIDIn, 1, 'uint16'));
+    
+    end
 end
-
 
 
 
