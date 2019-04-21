@@ -15,9 +15,14 @@ Cb = [];
 Cr = [];
 %esto obtiene las 576 lineas de video en SD
 
+total_lines_video = 0;
+total_lines_vsync = 0;
+
 for x = 1:625
     
-    read_line_from_SDI(FileIDIn);
+    [video, vsync] = read_line_from_SDI(FileIDIn);
+    total_lines_video = total_lines_video + video;
+    total_lines_vsync = total_lines_vsync + vsync;
     
     %[new_Y, new_Cb, new_Cr] = read_line_from_SDI(FileIDIn);
     %Y = [Y;new_Y];
@@ -29,9 +34,11 @@ end
 
 fclose(FileIDIn);
 
-function read_line_from_SDI(FileIDIn)
+function [video, vsync] = read_line_from_SDI(FileIDIn)
 
 %esta funcion lee una linea de video SDI
+video = 0;
+vsync = 0;
 
 Count=0;
 DataWord=0;
@@ -57,6 +64,28 @@ end
 %activo o si vien es borrado vertical
 XYZ = uint16(fread(FileIDIn, 1, 'uint16'));
 XYZ_bin = de2bi(XYZ, 'left-msb');
+
+if XYZ_bin(2) == 1
+    fprintf("Field 1\n");
+else
+    fprintf("Field 0\n");
+end
+
+if XYZ_bin(3) == 1
+    fprintf("Vertical Sync\n");
+    vsync = 1;
+else
+    fprintf("Active Video\n");
+    video = 1;
+end
+
+if XYZ_bin(4) == 1
+    fprintf("EAV\n");
+else
+    fprintf("SAV\n");
+end
+
+fprintf("\n");
 
 %El formato de video nativo de SD-SDI es 4:2:2
 %se tira el HANC y el SAV
