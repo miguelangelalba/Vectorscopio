@@ -14,10 +14,19 @@ Y = [];
 Cb = [];
 Cr = [];
 
+%lee un frame de la trama SDI e interpola sus componentes
 [Y, Cb, Cr] = read_video_frame(FileIDIn);
+[Cb4, Cr4] = cbcr2tocbcr4(Cb,Cr);
+
+%Muestra la Y, Cb, Cr
+figure;
+imshow(Y,[0 2^(8)-1],'InitialMagnification','fit');
 
 figure;
-imshow(Y,[0 2^(10)-1],'InitialMagnification','fit');
+imshow(Cb4,[0 2^(8)-1],'InitialMagnification','fit');
+
+figure;
+imshow(Cr4,[0 2^(8)-1],'InitialMagnification','fit');
 
 fclose(FileIDIn);
 
@@ -30,7 +39,8 @@ Y = [];
 Cb = [];
 Cr = [];
 
-
+%Lee las 625 lineas de un frame completo. Si es video activo, añade la
+%línea al array de y, cb, cr. Si no, lo tira.
 for x = 1:625
     
     [video, vsync, new_Y, new_Cb, new_Cr] = read_line_from_SDI(FileIDIn);
@@ -41,10 +51,6 @@ for x = 1:625
         Cb = [Cb;new_Cb];
         Cr = [Cr;new_Cr];
     end
-    %[new_Y, new_Cb, new_Cr] = read_line_from_SDI(FileIDIn);
-    %Y = [Y;new_Y];
-    %Cb = [Cb;new_Cb];
-    %Cr = [Cr;new_Cr];
 end
 fprintf("Finished reading video frame");
 
@@ -52,7 +58,7 @@ fprintf("Finished reading video frame");
 
 function [video, vsync, Y, Cb, Cr] = read_line_from_SDI(FileIDIn)
 
-%esta funcion lee una linea de video SDI
+%esta funcion lee una linea de video SDI desde el unicio de un EAV
 video = 0;
 vsync = 0;
 
@@ -85,30 +91,30 @@ end
 XYZ = uint16(fread(FileIDIn, 1, 'uint16'));
 XYZ_bin = de2bi(XYZ, 'left-msb');
 
-if XYZ_bin(2) == 1
-    fprintf("Field 1\n");
-else
-    fprintf("Field 0\n");
-end
+%if XYZ_bin(2) == 1
+ %   fprintf("Field 1\n");
+%else
+ %   fprintf("Field 0\n");
+%end
 
 if XYZ_bin(3) == 1
-    fprintf("Vertical Sync\n");
+    %fprintf("Vertical Sync\n");
     vsync = 1;
 else
-    fprintf("Active Video\n");
+    %fprintf("Active Video\n");
     video = 1;
 end
 
-if XYZ_bin(4) == 1
-    fprintf("EAV\n");
-else
-    fprintf("SAV\n");
-end
+%if XYZ_bin(4) == 1
+ %   fprintf("EAV\n");
+%else
+ %   fprintf("SAV\n");
+%end
 
 fprintf("\n");
 
 %El formato de video nativo de SD-SDI es 4:2:2
-%se tira el HANC y el SAV
+%Tira el HANC y el SAV
 for i = 1:284
     word_to_discard = uint16(fread(FileIDIn, 1, 'uint16'));
  
@@ -119,6 +125,8 @@ end
 
 
 function [Y, Cb, Cr] = read_payload(FileIDIn, is_active)
+
+%Según el tipo de payload, lo tira o lo guarda porque es vídeo activo
 
 Y = [];
 Cb = [];
@@ -140,7 +148,7 @@ if is_active == 1
 else
     
     for counter = 1:360
-    
+        %Tiro las words porque es VANC
         word_to_discard = uint16(fread(FileIDIn, 1, 'uint16'));
         word_to_discard = uint16(fread(FileIDIn, 1, 'uint16'));
         word_to_discard = uint16(fread(FileIDIn, 1, 'uint16'));
