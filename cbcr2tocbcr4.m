@@ -1,9 +1,7 @@
-Cols= 720;
-
-resize_matrix = create_resize_matrix(Cols);
-
 
 function [Cb4,Cr4] = cbcr2tocbcr4(Cb,Cr)
+    Cols= 720;
+    resize_matrix = create_resize_matrix(Cols);
     Cb4 = [];
     Cr4 = [];
     for i=1:size(Cb,1)
@@ -16,20 +14,23 @@ function [Cb4,Cr4] = cbcr2tocbcr4(Cb,Cr)
     end
     Cb4 = uint16(Cb4);
     Cr4 = uint16(Cr4);
-
+end
 
 function Vline4 = interpola2to4(Vline,resize_matrix)
+Cols= 720;
 % line = vector que contiene los puntos de muestra
 % Metodo predeterminado "linear"
     [n_filas, n_columnas] = size(Vline);
     index = [1:n_columnas];
-    disp(index);
-    Vline4 = interp1(index,double(Vline),resize_matrix,'cubic');
+    %disp(index);
+    Vline4 = interp1(index,double(Vline),resize_matrix,'pchip');
     Vline4 = round(Vline4);
-    disp(Vline4);
+    %disp(Vline4);
+end
 
 
 function [resize_matrix] = create_resize_matrix (size)
+    Cols= 720;
     resize_matrix = [];
     for i = 1:size
         if i ==1
@@ -40,3 +41,4 @@ function [resize_matrix] = create_resize_matrix (size)
         end
         i = i+1;
     end
+end
