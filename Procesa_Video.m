@@ -32,7 +32,7 @@ if Subsampling==422
 end
 
 % Leo el primer frame de video
-[Y, Cb, Cr]=Read_YUV(FileIDIn, Rows, Cols, YSize, CbCrSize, BitDepth);
+[Y, Cb, Cr]=Read_YUV_422_10b(FileIDIn, Rows, Cols, YSize, CbCrSize, BitDepth);
 
 % Visualizo la lY
 %figure;

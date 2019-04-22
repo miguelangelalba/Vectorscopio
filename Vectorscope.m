@@ -1,4 +1,4 @@
-function Procesa_Video(StreamName)
+function Procesa_Videos(StreamName)
 % ETSI Telecomunicacion
 % Universidad Rey Juan Carlos
 % Lee una secuejncia de video YCbCr Planar
