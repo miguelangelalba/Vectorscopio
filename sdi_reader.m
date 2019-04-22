@@ -17,7 +17,7 @@ Cr = [];
 frames_array = [];
 
 %lee un frame de la trama SDI e interpola sus componentes
-for x = 1:2
+for x = 1:25
     
     [Y, Cb, Cr] = read_video_frame(FileIDIn);
     [Cb4, Cr4] = cbcr2tocbcr4(Cb,Cr);
