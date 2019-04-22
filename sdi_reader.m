@@ -19,14 +19,14 @@ Cr = [];
 [Cb4, Cr4] = cbcr2tocbcr4(Cb,Cr);
 
 %Muestra la Y, Cb, Cr
-%figure;
-%imshow(Y,[0 2^(8)-1],'InitialMagnification','fit');
+figure;
+imshow(Y,[0 2^(10)-1],'InitialMagnification','fit');
 
-%figure;
-%imshow(Cb4,[0 2^(8)-1],'InitialMagnification','fit');
+figure;
+imshow(Cb4,[0 2^(10)-1],'InitialMagnification','fit');
 
-%figure;
-%imshow(Cr4,[0 2^(8)-1],'InitialMagnification','fit');
+figure;
+imshow(Cr4,[0 2^(10)-1],'InitialMagnification','fit');
 
 fclose(FileIDIn);
 
@@ -136,12 +136,19 @@ if is_active == 1
     for counter = 1:360
     
         Cb0 = uint16(fread(FileIDIn, 1, 'uint16'));
+        Cb0 = map_value_10b(Cb0, 16, 240, 64, 960);
         Cb = [Cb, Cb0];
+        
         Y0 = uint16(fread(FileIDIn, 1, 'uint16'));
+        Y0 = map_value_10b(Y0, 16, 235, 64, 940);
         Y = [Y, Y0];
+        
         Cr0 = uint16(fread(FileIDIn, 1, 'uint16'));
+        Cr0 = map_value_10b(Cr0, 16, 240, 64, 960);
         Cr = [Cr, Cr0];
+        
         Y1 = uint16(fread(FileIDIn, 1, 'uint16'));
+        Y1 = map_value_10b(Y1, 16, 235, 64, 940);
         Y = [Y, Y1];
     
     end
@@ -156,6 +163,16 @@ else
     
     end
 end
+
+
+function output = map_value_10b(value,fromLow,fromHigh,toLow,toHigh)
+
+   A = value-fromLow;
+   B = toHigh - toLow;
+   C = fromHigh - fromLow;
+   D = double(A)*B;
+   E = D/C;
+   output = uint16(E + toLow);
 
 
 
