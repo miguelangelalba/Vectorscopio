@@ -19,19 +19,21 @@ def get_video_frame(video_width, video_height):
     eng = matlab.engine.start_matlab()
 
     #rgb_image, R, G, B, Y, Cb4, Cr4 = eng.Vectorscope('F1_720x576_P422_8b_25Hz.yuv', nargout=7)
-    Y, Cb4, Cr4, frames_array = eng.sdi_reader('Stream2_TypeA.sdi', nargout=4)
+    frames_array = eng.sdi_reader('Stream2_TypeA.sdi', nargout=1)
 
 #Cr is the Y axis
 #Cb is the X axis
-
+    #El primer índice de la Y es la altura y el segundo es el ancho
+    #print(frames_array[0]['Y'][300][300])
+    #Esto imprime, del primer frame, el primer valor de la Y
     x_axis = []
     y_axis = []
 
 
     for i in range(0, video_width):
         for x in range(0, video_height):
-            x_axis.append(map_value(Cb4[x][i], 0, 1023, -0.5, 0.5))
-            y_axis.append(map_value(Cr4[x][i], 0, 1023, -0.5, 0.5))
+            x_axis.append(map_value(frames_array[0]['Cb4'][x][i], 0, 1023, -0.5, 0.5))
+            y_axis.append(map_value(frames_array[0]['Cr4'][x][i], 0, 1023, -0.5, 0.5))
 
     return x_axis, y_axis
     #x es cb e y es cr

@@ -1,4 +1,4 @@
-function [Y, Cb4, Cr4, frames_array] = sdi_reader(StreamName)
+function [frames_array] = sdi_reader(StreamName)
 
 %abre el fichero e invoca a leer linea de video todas las veces necesarias
 close('all');
@@ -21,19 +21,19 @@ for x = 1:2
     
     [Y, Cb, Cr] = read_video_frame(FileIDIn);
     [Cb4, Cr4] = cbcr2tocbcr4(Cb,Cr);
-    frames_array(x).Y = Y;
-    frames_array(x).Cb4 = Cb4;
-    frames_array(x).Cr4 = Cr4;
+    frames_array{x}.Y = Y;
+    frames_array{x}.Cb4 = Cb4;
+    frames_array{x}.Cr4 = Cr4;
 end
 %Muestra la Y, Cb, Cr
-figure;
-imshow(frames_array(1).Y,[0 2^(10)-1],'InitialMagnification','fit');
+%figure;
+%imshow(frames_array{1,1}(1,1).Y,[0 2^(10)-1],'InitialMagnification','fit');
 
-figure;
-imshow(frames_array(1).Cb4,[0 2^(10)-1],'InitialMagnification','fit');
+%figure;
+%imshow(frames_array{1,1}(1,1).Cb4,[0 2^(10)-1],'InitialMagnification','fit');
 
-figure;
-imshow(frames_array(1).Cr4,[0 2^(10)-1],'InitialMagnification','fit');
+%figure;
+%imshow(frames_array{1,1}(1,1).Cr4,[0 2^(10)-1],'InitialMagnification','fit');
 
 fclose(FileIDIn);
 
