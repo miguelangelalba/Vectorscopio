@@ -93,7 +93,7 @@ def next_frame(event):
     x_axis, y_axis = get_video_frame(frame_to_show.value)
     video_info.set_xdata(x_axis)
     video_info.set_ydata(y_axis)
-    plt.text(0, -0.5, "Frame: " + str(frame_to_show.value))
+    plt.title("Frame: " + str(frame_to_show.value))
     #print(frame_to_show.value)
     plt.draw()
 
@@ -106,12 +106,14 @@ def change_mode(event):
         #print("Line mode activated")
         video_info.set_xdata(x_axis[line_to_show.value:line_to_show.value+720])
         video_info.set_ydata(y_axis[line_to_show.value:line_to_show.value+720])
+        plt.title("Line: " + str(line_to_show.value))
         plt.draw()
 
     else:
         #print("Frame mode activated")
         video_info.set_xdata(x_axis)
         video_info.set_ydata(y_axis)
+        plt.title("Frame: " + str(frame_to_show.value))
         plt.draw()
 
 
@@ -121,6 +123,7 @@ def next_line(event):
     x_axis, y_axis = get_video_frame(frame_to_show.value)
     video_info.set_xdata(x_axis[line_to_show.value:line_to_show.value+720])
     video_info.set_ydata(y_axis[line_to_show.value:line_to_show.value+720])
+    plt.title("Line: " + str(line_to_show.value))
     plt.draw()
 
 def previous_frame(event):
@@ -130,7 +133,7 @@ def previous_frame(event):
     x_axis, y_axis = get_video_frame(frame_to_show.value)
     video_info.set_xdata(x_axis)
     video_info.set_ydata(y_axis)
-    plt.text(0, -0.5, "Frame: " + str(frame_to_show.value))
+    plt.title("Frame: " + str(frame_to_show.value))
     #print(frame_to_show.value)
     plt.draw()
 
@@ -169,7 +172,9 @@ def main():
         change_button = Button(change_mode_axes, 'Change Mode.', color='0.5', hovercolor='0.6')
         change_button.on_clicked(change_mode)
 
-        showframe_axis = plt.title("Frame: " + str(frame_to_show.value))
+        plt.axes([0.9, 0.4, 0.1, 0.065])
+        plt.title("Frame: " + str(frame_to_show.value))
+        plt.axis('off')
         plt.show()
 
 
