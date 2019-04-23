@@ -103,6 +103,7 @@ def change_mode(event):
 
     if(mode.value == 1):
         print("Line mode activated")
+        print(x_axis)
         video_info.set_xdata(x_axis[line_to_show.value])
         video_info.set_ydata(y_axis[line_to_show.value])
         plt.draw()
