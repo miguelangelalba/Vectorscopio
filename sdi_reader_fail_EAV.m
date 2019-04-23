@@ -26,14 +26,14 @@ for x = 1:2
     frames_array{x}.Cr4 = Cr4;
 end
 %Muestra la Y, Cb, Cr
-%figure;
-%imshow(frames_array{1,1}(1,1).Y,[0 2^(10)-1],'InitialMagnification','fit');
+figure;
+imshow(frames_array{1,1}(1,1).Y,[0 2^(10)-1],'InitialMagnification','fit');
 
-%figure;
-%imshow(frames_array{1,1}(1,1).Cb4,[0 2^(10)-1],'InitialMagnification','fit');
+figure;
+imshow(frames_array{1,1}(1,1).Cb4,[0 2^(10)-1],'InitialMagnification','fit');
 
-%figure;
-%imshow(frames_array{1,1}(1,1).Cr4,[0 2^(10)-1],'InitialMagnification','fit');
+figure;
+imshow(frames_array{1,1}(1,1).Cr4,[0 2^(10)-1],'InitialMagnification','fit');
 
 fclose(FileIDIn);
 
@@ -180,7 +180,7 @@ function output = map_value_10b(value,fromLow,fromHigh,toLow,toHigh)
    E = D/C;
    output = uint16(E + toLow);
 
-funcrion DataWord = find_EAV(FileIDIn)
+function DataWord = find_EAV(FileIDIn)
   %Esta función devolverá el puntero a partir el cual se encuentra el EAV correcto
   %Salto 3 words estando en XYZ
   fseek(FileIDIn, 8, 'cof');
@@ -188,11 +188,11 @@ funcrion DataWord = find_EAV(FileIDIn)
   XYZ_bin = de2bi(XYZ, 'left-msb');
 
   if XYZ_bin(4) == 1
-      %fprintf("Corresponde con un EAV\n");
+      fprintf("Corresponde con un EAV\n");
       %Devuelvo el puntero al 3FF
       fseek(FileIDIn, -8, 'cof');
   else
-      %fprintf("Corresponde con un SAV\n");
+      fprintf("Corresponde con un SAV\n");
       %Puesto que el 3FF que ha encontrado es el SAV y los datos van en serie
       %Seguro  que el siguiente que encuentre la función es el find_EAV
       %por lo que no necesita mirar de nuevo el xyz
@@ -201,9 +201,11 @@ funcrion DataWord = find_EAV(FileIDIn)
   DataWord = 1023;
 
 
-end
+
 function find_trs(FileIDIn)
   %Esta función devolverá el puntero al TRS
+  DataWord = 0;
+  Count = 0;
   while (DataWord~=1023)
   %Con este while localizaremos el primer 3FF
     DataWord = uint16(fread(FileIDIn, 1, 'uint16'));
