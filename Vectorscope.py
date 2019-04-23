@@ -131,10 +131,15 @@ def main():
 
         global video_info
         video_info = draw_video_info(x_axis, y_axis)
-        axnext = plt.axes([0.81, -0.02, 0.15, 0.075])
+        frnext = plt.axes([0.81, -0.02, 0.15, 0.075])
         plt.title("Frame: " + str(frame_to_show.value))
-        bnext = Button(axnext, 'Next frame.', color='0.5', hovercolor='0.6')
+        bnext = Button(frnext, 'Next frame.', color='0.5', hovercolor='0.6')
         bnext.on_clicked(next_frame)
+
+        chngmd = plt.axes([0.71, -0.02, 0.15, 0.075])
+        button_change = Button(chngmd, 'Change Mode.', color='0.5', hovercolor='0.6')
+        button_change.on_clicked(change_mode)
+
         plt.show()
 
 
