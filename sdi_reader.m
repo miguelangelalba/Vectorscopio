@@ -26,14 +26,14 @@ for x = 1:25
     frames_array{x}.Cr4 = Cr4;
 end
 %Muestra la Y, Cb, Cr
-figure;
-imshow(frames_array{1,1}(1,1).Y,[0 2^(10)-1],'InitialMagnification','fit');
+%figure;
+%imshow(frames_array{1,1}(1,1).Y,[0 2^(10)-1],'InitialMagnification','fit');
 
-figure;
-imshow(frames_array{1,1}(1,1).Cb4,[0 2^(10)-1],'InitialMagnification','fit');
+%figure;
+%imshow(frames_array{1,1}(1,1).Cb4,[0 2^(10)-1],'InitialMagnification','fit');
 
-figure;
-imshow(frames_array{1,1}(1,1).Cr4,[0 2^(10)-1],'InitialMagnification','fit');
+%figure;
+%imshow(frames_array{1,1}(1,1).Cr4,[0 2^(10)-1],'InitialMagnification','fit');
 
 fclose(FileIDIn);
 
