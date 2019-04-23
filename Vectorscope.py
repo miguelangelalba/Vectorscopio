@@ -93,7 +93,7 @@ def next_frame(event):
     x_axis, y_axis = get_video_frame(frame_to_show.value)
     video_info.set_xdata(x_axis)
     video_info.set_ydata(y_axis)
-    plt.title("Frame: " + str(frame_to_show.value))
+    plt.text(0, -0.5, "Frame: " + str(frame_to_show.value))
     #print(frame_to_show.value)
     plt.draw()
 
@@ -130,7 +130,7 @@ def previous_frame(event):
     x_axis, y_axis = get_video_frame(frame_to_show.value)
     video_info.set_xdata(x_axis)
     video_info.set_ydata(y_axis)
-    plt.title("Frame: " + str(frame_to_show.value))
+    plt.text(0, -0.5, "Frame: " + str(frame_to_show.value))
     #print(frame_to_show.value)
     plt.draw()
 
@@ -150,27 +150,26 @@ def main():
         video_info = draw_video_info(x_axis, y_axis)
 
         #next frame button
-        next_frame_axes = plt.axes([0.81, -0.02, 0.15, 0.075])
+        next_frame_axes = plt.axes([0.9, 0.8, 0.1, 0.065])
         next_frame_button = Button(next_frame_axes, 'Next frame.', color='0.5', hovercolor='0.6')
         next_frame_button.on_clicked(next_frame)
 
         #previous frame button
-        previous_frame_axes = plt.axes([0.71, -0.02, 0.15, 0.075])
+        previous_frame_axes = plt.axes([0.9, 0.7, 0.1, 0.065])
         previous_frame_button = Button(previous_frame_axes, 'Previous frame.', color='0.5', hovercolor='0.6')
         previous_frame_button.on_clicked(previous_frame)
 
         #next line button
-        next_line_axes = plt.axes([0.61, -0.02, 0.15, 0.075])
+        next_line_axes = plt.axes([0.9, 0.6, 0.1, 0.065])
         next_line_button = Button(next_line_axes, 'Next line.', color='0.5', hovercolor='0.6')
         next_line_button.on_clicked(next_line)
 
         #change mode button
-        change_mode_axes = plt.axes([0.51, -0.02, 0.15, 0.075])
+        change_mode_axes = plt.axes([0.9, 0.5, 0.1, 0.065])
         change_button = Button(change_mode_axes, 'Change Mode.', color='0.5', hovercolor='0.6')
         change_button.on_clicked(change_mode)
 
-
-        plt.title("Frame: " + str(frame_to_show.value))
+        showframe_axis = plt.title("Frame: " + str(frame_to_show.value))
         plt.show()
 
 
