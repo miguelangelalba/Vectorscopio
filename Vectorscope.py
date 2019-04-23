@@ -154,13 +154,18 @@ def main():
         next_frame_button = Button(next_frame_axes, 'Next frame.', color='0.5', hovercolor='0.6')
         next_frame_button.on_clicked(next_frame)
 
+        #previous frame button
+        previous_frame_axes = plt.axes([0.71, -0.02, 0.15, 0.075])
+        previous_frame_button = Button(previous_frame_axes, 'Previous frame.', color='0.5', hovercolor='0.6')
+        previous_frame_button.on_clicked(previous_frame)
+
         #next line button
         next_line_axes = plt.axes([0.61, -0.02, 0.15, 0.075])
         next_line_button = Button(next_line_axes, 'Next line.', color='0.5', hovercolor='0.6')
         next_line_button.on_clicked(next_line)
 
         #change mode button
-        change_mode_axes = plt.axes([0.71, -0.02, 0.15, 0.075])
+        change_mode_axes = plt.axes([0.51, -0.02, 0.15, 0.075])
         change_button = Button(change_mode_axes, 'Change Mode.', color='0.5', hovercolor='0.6')
         change_button.on_clicked(change_mode)
 
