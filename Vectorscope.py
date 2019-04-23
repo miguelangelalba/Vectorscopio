@@ -25,13 +25,17 @@ def get_video_frame(frame_to_show):
     #Lo ideal sería modificar el código de matlab para que devolviese la información de todos los frames y luego desde aquí
     #poder elergir el frame o línea que se quiere ver.
 
-    #eng = matlab.engine.start_matlab()
+    eng = matlab.engine.start_matlab()
 
     #rgb_image, R, G, B, Y, Cb4, Cr4 = eng.Vectorscope('F1_720x576_P422_8b_25Hz.yuv', nargout=7)
-    #frames_array = eng.sdi_reader('Stream2_TypeA.sdi', nargout=1)
+    frames_array = eng.sdi_reader('Stream2_TypeA.sdi', nargout=1)
 
-    with open("frames.txt", "rb") as fp:   # Unpickling
-        frames_array = pickle.load(fp)
+    with open('frames.txt', 'wb') as fp:
+        pickle.dump(frames_array, fp)
+
+    #with open("frames.txt", "rb") as fp:   # Unpickling
+        #frames_array = pickle.load(fp)
+
 #Cr is the Y axis
 #Cb is the X axis
     #El primer índice de la Y es la altura y el segundo es el ancho
