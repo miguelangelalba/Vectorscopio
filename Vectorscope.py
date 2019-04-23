@@ -94,6 +94,7 @@ def next_frame(event):
     video_info.set_xdata(x_axis)
     video_info.set_ydata(y_axis)
     plt.title("Frame: " + str(frame_to_show.value))
+    line_to_show.value = 0
     #print(frame_to_show.value)
     plt.draw()
 
@@ -134,6 +135,7 @@ def previous_frame(event):
     video_info.set_xdata(x_axis)
     video_info.set_ydata(y_axis)
     plt.title("Frame: " + str(frame_to_show.value))
+    line_to_show.value = 0
     #print(frame_to_show.value)
     plt.draw()
 
