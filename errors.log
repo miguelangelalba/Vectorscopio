@@ -1,0 +1,66 @@
+>> sdi_reader_eof(Stream2_TypeA.sdi)
+Undefined variable "Stream2_TypeA" or class "Stream2_TypeA.sdi".
+
+>> sdi_reader_eof("Stream2_TypeA.sdi")
+Error: File: sdi_reader_eof.m Line: 141 Column: 21
+Expression or statement is incomplete or incorrect.
+
+Exception in thread "AWT-EventQueue-0" java.lang.OutOfMemoryError: Java heap space
+	at javax.swing.text.GapContent.allocateArray(GapContent.java:94)
+	at javax.swing.text.GapVector.resize(GapVector.java:214)
+	at javax.swing.text.GapVector.shiftEnd(GapVector.java:229)
+	at javax.swing.text.GapContent.shiftEnd(GapContent.java:345)
+	at javax.swing.text.GapVector.open(GapVector.java:201)
+	at javax.swing.text.GapVector.replace(GapVector.java:142)
+	at javax.swing.text.GapContent.insertString(GapContent.java:132)
+	at javax.swing.text.AbstractDocument.handleInsertString(AbstractDocument.java:723)
+	at javax.swing.text.AbstractDocument.insertString(AbstractDocument.java:707)
+	at javax.swing.text.PlainDocument.insertString(PlainDocument.java:130)
+	at javax.swing.text.DefaultEditorKit.read(DefaultEditorKit.java:273)
+	at com.mathworks.widgets.datamodel.TextFileBackingStore.readIntoDocument(TextFileBackingStore.java:206)
+	at com.mathworks.widgets.datamodel.TextFileBackingStore.loadDocumentFromFile(TextFileBackingStore.java:175)
+	at com.mathworks.widgets.datamodel.TextFileBackingStore.doLoad(TextFileBackingStore.java:247)
+	at com.mathworks.widgets.datamodel.TextFileBackingStore.doLoad(TextFileBackingStore.java:32)
+	at com.mathworks.widgets.datamodel.AbstractBackingStore.load(AbstractBackingStore.java:114)
+	at com.mathworks.mde.editor.EditorView.reload(EditorView.java:410)
+	at com.mathworks.mde.editor.EditorView.initSyntaxTextPane(EditorView.java:867)
+	at com.mathworks.mde.editor.EditorView.<init>(EditorView.java:222)
+	at com.mathworks.mde.editor.EditorView.<init>(EditorView.java:153)
+	at com.mathworks.mde.editor.EditorViewClient.init(EditorViewClient.java:228)
+	at com.mathworks.mde.editor.EditorViewClient.<init>(EditorViewClient.java:177)
+	at com.mathworks.mde.editor.MatlabEditorApplication.createEditorViewClient(MatlabEditorApplication.java:868)
+	at com.mathworks.mde.editor.MatlabEditorApplication.createEditorViewClient(MatlabEditorApplication.java:853)
+	at com.mathworks.mde.editor.MatlabEditorApplication.createEditorViewClientFromExistingFile(MatlabEditorApplication.java:845)
+	at com.mathworks.mde.editor.MatlabEditorApplication.access$500(MatlabEditorApplication.java:81)
+	at com.mathworks.mde.editor.MatlabEditorApplication$7.runWithOutput(MatlabEditorApplication.java:570)
+	at com.mathworks.jmi.AWTUtilities$Invoker$2.watchedRun(AWTUtilities.java:475)
+	at com.mathworks.jmi.AWTUtilities$WatchedRunnable.run(AWTUtilities.java:436)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:311)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:756)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+>> sdi_reader_eof(Stream2_TypeA.sdi)
+Undefined variable "Stream2_TypeA" or class "Stream2_TypeA.sdi".
+
+>> sdi_reader_eof("Stream2_TypeA.sdi")
+Undefined function or variable 'x'.
+
+Error in sdi_reader_eof (line 24)
+    frames_array{x}.Y = Y;
+
+>> sdi_reader_eof("Stream2_TypeA.sdi")
+Undefined function or variable 'x'.
+
+Error in sdi_reader_eof (line 24)
+    frames_array{x}.Y = Y;
+
+>> sdi_reader_eof("Stream2_TypeA.sdi")
+Assignment has more non-singleton rhs dimensions than non-singleton subscripts
+
+Error in sdi_reader_eof>read_line_from_SDI (line 87)
+TRS(1,1)=DataWord;
+
+Error in sdi_reader_eof>read_video_frame (line 54)
+    [video, vsync, new_Y, new_Cb, new_Cr] = read_line_from_SDI(FileIDIn);
+
+Error in sdi_reader_eof (line 22)
+    [Y, Cb, Cr] = read_video_frame(FileIDIn);
