@@ -39,8 +39,8 @@ def get_video_frame(frame_to_show):
     #with open('frames.txt', 'wb') as fp:
         #pickle.dump(frames_array, fp)
 
-    with open("frames.txt", "rb") as fp:   # Unpickling
-        frames_array = pickle.load(fp)
+    #with open("frames.txt", "rb") as fp:   # Unpickling
+        #frames_array = pickle.load(fp)
 
 #Cr is the Y axis
 #Cb is the X axis
@@ -51,8 +51,8 @@ def get_video_frame(frame_to_show):
     y_axis = []
 
 
-    for i in range(0, video_width):
-        for x in range(0, video_height):
+    for x in range(0, video_height):
+        for i in range(0, video_width):
             x_axis.append(map_value(frames_array[frame_to_show]['Cb4'][x][i], 0, 1023, -0.5, 0.5))
             y_axis.append(map_value(frames_array[frame_to_show]['Cr4'][x][i], 0, 1023, -0.5, 0.5))
 
@@ -82,17 +82,18 @@ def draw_vectorscope():
 def draw_video_info(x_axis, y_axis):
 
     #Dibuja el rayo de color
-
     video_info, = plt.plot(x_axis, y_axis, c="#7266ff", alpha=0.5)
     return video_info
 
 def next_frame(event):
 
+
+    frame_to_show.value += 1
+    print(frame_to_show.value)
     x_axis, y_axis = get_video_frame(frame_to_show.value)
     video_info.set_xdata(x_axis)
     video_info.set_ydata(y_axis)
-    frame_to_show.value += 1
-    plt.title("Frame: " + str(frame_to_show.value))
+    plt.text(0, -0.5, "Frame: " + str(frame_to_show.value))
     #print(frame_to_show.value)
     plt.draw()
 
@@ -102,14 +103,13 @@ def change_mode(event):
     x_axis, y_axis = get_video_frame(frame_to_show.value)
 
     if(mode.value == 1):
-        print("Line mode activated")
-        print(x_axis)
-        video_info.set_xdata(x_axis[line_to_show.value])
-        video_info.set_ydata(y_axis[line_to_show.value])
+        #print("Line mode activated")
+        video_info.set_xdata(x_axis[line_to_show.value:line_to_show.value+720])
+        video_info.set_ydata(y_axis[line_to_show.value:line_to_show.value+720])
         plt.draw()
 
     else:
-        print("Frame mode activated")
+        #print("Frame mode activated")
         video_info.set_xdata(x_axis)
         video_info.set_ydata(y_axis)
         plt.draw()
@@ -119,28 +119,57 @@ def next_line(event):
 
     line_to_show.value += 1
     x_axis, y_axis = get_video_frame(frame_to_show.value)
-    video_info.set_xdata(x_axis[line_to_show.value])
-    video_info.set_ydata(y_axis[line_to_show.value])
+    video_info.set_xdata(x_axis[line_to_show.value:line_to_show.value+720])
+    video_info.set_ydata(y_axis[line_to_show.value:line_to_show.value+720])
+    plt.draw()
+
+def previous_frame(event):
+
+    frame_to_show.value -= 1
+    print(frame_to_show.value)
+    x_axis, y_axis = get_video_frame(frame_to_show.value)
+    video_info.set_xdata(x_axis)
+    video_info.set_ydata(y_axis)
+    plt.text(0, -0.5, "Frame: " + str(frame_to_show.value))
+    #print(frame_to_show.value)
     plt.draw()
 
 
 def main():
 
     with plt.style.context(('dark_background')):
+        global frames_array
+
+        with open("frames.txt", "rb") as fp:   # Unpickling
+            frames_array = pickle.load(fp)
+
         x_axis, y_axis = get_video_frame(frame_to_show.value)
         draw_vectorscope()
 
         global video_info
         video_info = draw_video_info(x_axis, y_axis)
-        frnext = plt.axes([0.81, -0.02, 0.15, 0.075])
-        plt.title("Frame: " + str(frame_to_show.value))
-        bnext = Button(frnext, 'Next frame.', color='0.5', hovercolor='0.6')
-        bnext.on_clicked(next_frame)
 
-        chngmd = plt.axes([0.71, -0.02, 0.15, 0.075])
-        button_change = Button(chngmd, 'Change Mode.', color='0.5', hovercolor='0.6')
-        button_change.on_clicked(change_mode)
+        #next frame button
+        next_frame_axes = plt.axes([0.9, 0.8, 0.1, 0.065])
+        next_frame_button = Button(next_frame_axes, 'Next frame.', color='0.5', hovercolor='0.6')
+        next_frame_button.on_clicked(next_frame)
 
+        #previous frame button
+        previous_frame_axes = plt.axes([0.9, 0.7, 0.1, 0.065])
+        previous_frame_button = Button(previous_frame_axes, 'Previous frame.', color='0.5', hovercolor='0.6')
+        previous_frame_button.on_clicked(previous_frame)
+
+        #next line button
+        next_line_axes = plt.axes([0.9, 0.6, 0.1, 0.065])
+        next_line_button = Button(next_line_axes, 'Next line.', color='0.5', hovercolor='0.6')
+        next_line_button.on_clicked(next_line)
+
+        #change mode button
+        change_mode_axes = plt.axes([0.9, 0.5, 0.1, 0.065])
+        change_button = Button(change_mode_axes, 'Change Mode.', color='0.5', hovercolor='0.6')
+        change_button.on_clicked(change_mode)
+
+        showframe_axis = plt.title("Frame: " + str(frame_to_show.value))
         plt.show()
 
 
