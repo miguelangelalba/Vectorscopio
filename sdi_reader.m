@@ -17,7 +17,7 @@ Cr = [];
 frames_array = [];
 
 %lee un frame de la trama SDI e interpola sus componentes
-for x = 1:25
+for x = 1:2
     
     [Y, Cb, Cr] = read_video_frame(FileIDIn);
     [Cb4, Cr4] = cbcr2tocbcr4(Cb,Cr);
@@ -26,14 +26,14 @@ for x = 1:25
     frames_array{x}.Cr4 = Cr4;
 end
 %Muestra la Y, Cb, Cr
-%figure;
-%imshow(frames_array{1,1}(1,1).Y,[0 2^(10)-1],'InitialMagnification','fit');
+figure;
+imshow(frames_array{1,1}(1,1).Y,[0 2^(10)-1],'InitialMagnification','fit');
 
-%figure;
-%imshow(frames_array{1,1}(1,1).Cb4,[0 2^(10)-1],'InitialMagnification','fit');
+figure;
+imshow(frames_array{1,1}(1,1).Cb4,[0 2^(10)-1],'InitialMagnification','fit');
 
-%figure;
-%imshow(frames_array{1,1}(1,1).Cr4,[0 2^(10)-1],'InitialMagnification','fit');
+figure;
+imshow(frames_array{1,1}(1,1).Cr4,[0 2^(10)-1],'InitialMagnification','fit');
 
 fclose(FileIDIn);
 
@@ -118,15 +118,15 @@ end
  %   fprintf("SAV\n");
 %end
 
-fprintf("\n");
-
+fseek(FileIDIn, 568, 'cof'); %salta las 284 muestras (2 bytes cada muestra)
+%file_indicator = ftell(FileIDIn);
 %El formato de video nativo de SD-SDI es 4:2:2
 %Tira el HANC y el SAV
-for i = 1:284
-    word_to_discard = uint16(fread(FileIDIn, 1, 'uint16'));
+%for i = 1:284
+    
+%    uint16(fread(FileIDIn, 1, 'uint16'));
  
-end
-
+%end
 %Desde aqui, se lee la informacion de luma y croma o se tira el vanc
 [Y, Cb, Cr] = read_payload(FileIDIn, video);
 
@@ -161,14 +161,15 @@ if is_active == 1
     end
 else
     
-    for counter = 1:360
+    fseek(FileIDIn, 2880, 'cof'); %se saltan 1440 muestras de 2 bytes cada una
+    %for counter = 1:360
         %Tiro las words porque es VANC
-        word_to_discard = uint16(fread(FileIDIn, 1, 'uint16'));
-        word_to_discard = uint16(fread(FileIDIn, 1, 'uint16'));
-        word_to_discard = uint16(fread(FileIDIn, 1, 'uint16'));
-        word_to_discard = uint16(fread(FileIDIn, 1, 'uint16'));
+        %uint16(fread(FileIDIn, 1, 'uint16'));
+        %uint16(fread(FileIDIn, 1, 'uint16'));
+        %uint16(fread(FileIDIn, 1, 'uint16'));
+        %uint16(fread(FileIDIn, 1, 'uint16'));
     
-    end
+    %end
 end
 
 
