@@ -73,8 +73,8 @@ Y = [];
 Cb = [];
 Cr = [];
 
-Count=0;
-DataWord=0;
+%Count=0;
+%DataWord=0;
 TRS=uint16(zeros(1,4));
 TRSHeader =uint16([1023, 0, 0]);
 find_trs(FileIDIn);
@@ -183,14 +183,15 @@ function output = map_value_10b(value,fromLow,fromHigh,toLow,toHigh)
 function DataWord = find_EAV(FileIDIn)
   %Esta función devolverá el puntero a partir el cual se encuentra el EAV correcto
   %Salto 3 words estando en XYZ
-  fseek(FileIDIn, 8, 'cof');
+  fseek(FileIDIn, 4, 'cof');
   XYZ = uint16(fread(FileIDIn, 1, 'uint16'));
   XYZ_bin = de2bi(XYZ, 'left-msb');
 
   if XYZ_bin(4) == 1
       fprintf("Corresponde con un EAV\n");
-      %Devuelvo el puntero al 3FF
-      fseek(FileIDIn, -8, 'cof');
+      %Devuelvo el puntero al 3FF retrocedo 6 ya que he leido 2 despu�s del
+      %puntero
+      fseek(FileIDIn, -6, 'cof');
   else
       fprintf("Corresponde con un SAV\n");
       %Puesto que el 3FF que ha encontrado es el SAV y los datos van en serie
