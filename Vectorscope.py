@@ -167,15 +167,15 @@ def previous_frame(event):
 def main():
 
     global frames_array
-    #eng = matlab.engine.start_matlab()
-    #frames_array = eng.sdi_reader('Stream2_TypeA.sdi', nargout=1)
-    #with open('frames.txt', 'wb') as fp:
-        #pickle.dump(frames_array, fp)
+    eng = matlab.engine.start_matlab()
+    frames_array = eng.sdi_reader('Stream1_TypeA.sdi', nargout=1)
+    with open('frames.txt', 'wb') as fp:
+        pickle.dump(frames_array, fp)
 
     with plt.style.context(('dark_background')):
 
-        with open("frames.txt", "rb") as fp:   # Unpickling
-            frames_array = pickle.load(fp)
+        #with open("frames.txt", "rb") as fp:   # Unpickling
+            #frames_array = pickle.load(fp)
 
         x_axis, y_axis = get_video_frame(frame_to_show.value)
         draw_vectorscope()

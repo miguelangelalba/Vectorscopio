@@ -17,7 +17,7 @@ Cr = [];
 frames_array = [];
 
 %lee un frame de la trama SDI e interpola sus componentes
-for x = 1:2
+for x = 1:25
 
     [Y, Cb, Cr] = read_video_frame(FileIDIn);
     [Cb4, Cr4] = cbcr2tocbcr4(Cb,Cr);
@@ -26,14 +26,14 @@ for x = 1:2
     frames_array{x}.Cr4 = Cr4;
 end
 %Muestra la Y, Cb, Cr
-figure;
-imshow(frames_array{1,1}(1,1).Y,[0 2^(10)-1],'InitialMagnification','fit');
+%figure;
+%imshow(frames_array{1,1}(1,1).Y,[0 2^(10)-1],'InitialMagnification','fit');
 
-figure;
-imshow(frames_array{1,1}(1,1).Cb4,[0 2^(10)-1],'InitialMagnification','fit');
+%figure;
+%imshow(frames_array{1,1}(1,1).Cb4,[0 2^(10)-1],'InitialMagnification','fit');
 
-figure;
-imshow(frames_array{1,1}(1,1).Cr4,[0 2^(10)-1],'InitialMagnification','fit');
+%figure;
+%imshow(frames_array{1,1}(1,1).Cr4,[0 2^(10)-1],'InitialMagnification','fit');
 
 fclose(FileIDIn);
 
@@ -188,12 +188,12 @@ function DataWord = find_EAV(FileIDIn)
   XYZ_bin = de2bi(XYZ, 'left-msb');
 
   if XYZ_bin(4) == 1
-      fprintf("Corresponde con un EAV\n");
-      %Devuelvo el puntero al 3FF retrocedo 6 ya que he leido 2 después del
+      %fprintf("Corresponde con un EAV\n");
+      %Devuelvo el puntero al 3FF retrocedo 6 ya que he leido 2 despuï¿½s del
       %puntero
       fseek(FileIDIn, -6, 'cof');
   else
-      fprintf("Corresponde con un SAV\n");
+      %fprintf("Corresponde con un SAV\n");
       %Puesto que el 3FF que ha encontrado es el SAV y los datos van en serie
       %Seguro  que el siguiente que encuentre la funciÃ³n es el find_EAV
       %por lo que no necesita mirar de nuevo el xyz
