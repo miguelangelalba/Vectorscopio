@@ -17,8 +17,8 @@ Cr = [];
 frames_array = [];
 
 %lee un frame de la trama SDI e interpola sus componentes
-for x = 1:25
-    
+for x = 1:2
+
     [Y, Cb, Cr] = read_video_frame(FileIDIn);
     [Cb4, Cr4] = cbcr2tocbcr4(Cb,Cr);
     frames_array{x}.Y = Y;
@@ -26,14 +26,14 @@ for x = 1:25
     frames_array{x}.Cr4 = Cr4;
 end
 %Muestra la Y, Cb, Cr
-%figure;
-%imshow(frames_array{1,1}(1,1).Y,[0 2^(10)-1],'InitialMagnification','fit');
+figure;
+imshow(frames_array{1,1}(1,1).Y,[0 2^(10)-1],'InitialMagnification','fit');
 
-%figure;
-%imshow(frames_array{1,1}(1,1).Cb4,[0 2^(10)-1],'InitialMagnification','fit');
+figure;
+imshow(frames_array{1,1}(1,1).Cb4,[0 2^(10)-1],'InitialMagnification','fit');
 
-%figure;
-%imshow(frames_array{1,1}(1,1).Cr4,[0 2^(10)-1],'InitialMagnification','fit');
+figure;
+imshow(frames_array{1,1}(1,1).Cr4,[0 2^(10)-1],'InitialMagnification','fit');
 
 fclose(FileIDIn);
 
@@ -46,10 +46,10 @@ Y = [];
 Cb = [];
 Cr = [];
 
-%Lee las 625 lineas de un frame completo. Si es video activo, añade la
-%línea al array de y, cb, cr. Si no, lo tira.
+%Lee las 625 lineas de un frame completo. Si es video activo, aï¿½ade la
+%lï¿½nea al array de y, cb, cr. Si no, lo tira.
 for x = 1:625
-    
+
     [video, vsync, new_Y, new_Cb, new_Cr] = read_line_from_SDI(FileIDIn);
     total_lines_video = total_lines_video + video;
     total_lines_vsync = total_lines_vsync + vsync;
@@ -73,15 +73,13 @@ Y = [];
 Cb = [];
 Cr = [];
 
-Count=0;
-DataWord=0;
+%Count=0;
+%DataWord=0;
 TRS=uint16(zeros(1,4));
 TRSHeader =uint16([1023, 0, 0]);
+find_trs(FileIDIn);
+DataWord = find_EAV(FileIDIn);
 
-while (DataWord~=1023)
-    DataWord = uint16(fread(FileIDIn, 1, 'uint16'));
-    Count=Count+1;
-end
 
 TRS(1,1)=DataWord;
 TRS(1,2)=uint16(fread(FileIDIn, 1, 'uint16'));
@@ -123,9 +121,9 @@ fseek(FileIDIn, 568, 'cof'); %salta las 284 muestras (2 bytes cada muestra)
 %El formato de video nativo de SD-SDI es 4:2:2
 %Tira el HANC y el SAV
 %for i = 1:284
-    
+
 %    uint16(fread(FileIDIn, 1, 'uint16'));
- 
+
 %end
 %Desde aqui, se lee la informacion de luma y croma o se tira el vanc
 [Y, Cb, Cr] = read_payload(FileIDIn, video);
@@ -133,7 +131,7 @@ fseek(FileIDIn, 568, 'cof'); %salta las 284 muestras (2 bytes cada muestra)
 
 function [Y, Cb, Cr] = read_payload(FileIDIn, is_active)
 
-%Según el tipo de payload, lo tira o lo guarda porque es vídeo activo
+%Segï¿½n el tipo de payload, lo tira o lo guarda porque es vï¿½deo activo
 
 Y = [];
 Cb = [];
@@ -141,26 +139,26 @@ Cr = [];
 
 if is_active == 1
     for counter = 1:360
-    
+
         Cb0 = uint16(fread(FileIDIn, 1, 'uint16'));
         Cb0 = map_value_10b(Cb0, 16, 240, 64, 960);
         Cb = [Cb, Cb0];
-        
+
         Y0 = uint16(fread(FileIDIn, 1, 'uint16'));
         Y0 = map_value_10b(Y0, 16, 235, 64, 940);
         Y = [Y, Y0];
-        
+
         Cr0 = uint16(fread(FileIDIn, 1, 'uint16'));
         Cr0 = map_value_10b(Cr0, 16, 240, 64, 960);
         Cr = [Cr, Cr0];
-        
+
         Y1 = uint16(fread(FileIDIn, 1, 'uint16'));
         Y1 = map_value_10b(Y1, 16, 235, 64, 940);
         Y = [Y, Y1];
-    
+
     end
 else
-    
+
     fseek(FileIDIn, 2880, 'cof'); %se saltan 1440 muestras de 2 bytes cada una
     %for counter = 1:360
         %Tiro las words porque es VANC
@@ -168,7 +166,7 @@ else
         %uint16(fread(FileIDIn, 1, 'uint16'));
         %uint16(fread(FileIDIn, 1, 'uint16'));
         %uint16(fread(FileIDIn, 1, 'uint16'));
-    
+
     %end
 end
 
@@ -182,6 +180,35 @@ function output = map_value_10b(value,fromLow,fromHigh,toLow,toHigh)
    E = D/C;
    output = uint16(E + toLow);
 
+function DataWord = find_EAV(FileIDIn)
+  %Esta funciÃ³n devolverÃ¡ el puntero a partir el cual se encuentra el EAV correcto
+  %Salto 3 words estando en XYZ
+  fseek(FileIDIn, 4, 'cof');
+  XYZ = uint16(fread(FileIDIn, 1, 'uint16'));
+  XYZ_bin = de2bi(XYZ, 'left-msb');
+
+  if XYZ_bin(4) == 1
+      fprintf("Corresponde con un EAV\n");
+      %Devuelvo el puntero al 3FF retrocedo 6 ya que he leido 2 después del
+      %puntero
+      fseek(FileIDIn, -6, 'cof');
+  else
+      fprintf("Corresponde con un SAV\n");
+      %Puesto que el 3FF que ha encontrado es el SAV y los datos van en serie
+      %Seguro  que el siguiente que encuentre la funciÃ³n es el find_EAV
+      %por lo que no necesita mirar de nuevo el xyz
+      find_trs(FileIDIn);
+  end
+  DataWord = 1023;
 
 
 
+function find_trs(FileIDIn)
+  %Esta funciÃ³n devolverÃ¡ el puntero al TRS
+  DataWord = 0;
+  Count = 0;
+  while (DataWord~=1023)
+  %Con este while localizaremos el primer 3FF
+    DataWord = uint16(fread(FileIDIn, 1, 'uint16'));
+    Count=Count+1;
+  end
