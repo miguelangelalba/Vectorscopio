@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import pickle
 from matplotlib.widgets import Button
 from itertools import islice
+import sys
 
 video_width = 720
 video_height = 576
@@ -168,7 +169,8 @@ def main():
 
     global frames_array
     eng = matlab.engine.start_matlab()
-    frames_array = eng.sdi_reader('Stream1_TypeA.sdi', nargout=1)
+    stream_in = sys.argv[1]
+    frames_array = eng.sdi_reader(stream_in, nargout=1)
     with open('frames.txt', 'wb') as fp:
         pickle.dump(frames_array, fp)
 
