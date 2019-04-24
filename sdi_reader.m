@@ -1,4 +1,4 @@
-function [frames_array] = sdi_reader(StreamName)
+function [frames_array] = sdi_reader(StreamName, frames_to_read)
 
 %abre el fichero e invoca a leer linea de video todas las veces necesarias
 close('all');
@@ -17,7 +17,7 @@ Cr = [];
 frames_array = [];
 
 %lee un frame de la trama SDI e interpola sus componentes
-for x = 1:25
+for x = 1:frames_to_read
 
     [Y, Cb, Cr] = read_video_frame(FileIDIn);
     [Cb4, Cr4] = cbcr2tocbcr4(Cb,Cr);

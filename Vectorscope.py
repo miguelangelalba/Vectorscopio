@@ -170,7 +170,8 @@ def main():
     global frames_array
     eng = matlab.engine.start_matlab()
     stream_in = sys.argv[1]
-    frames_array = eng.sdi_reader(stream_in, nargout=1)
+    frames_to_read = int(sys.argv[2])
+    frames_array = eng.sdi_reader(stream_in, frames_to_read, nargout=1)
     with open('frames.txt', 'wb') as fp:
         pickle.dump(frames_array, fp)
 
