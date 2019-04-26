@@ -1,9 +1,10 @@
 # Vectorscopio
 
-Vectorscopio para archivos .yuv
-En un futuro, podrá valer para tramas SDI
+Vectorscopio para archivos .yuv y archivos provenientes de tramas SDI .sdi
 
-para ejecutarlo, ejecutar con python 3.6 Vectorscope.py
+para ejecutarlo:
+
+python3 Vectorscope.py <archivo SDi de entrada> <Número de frames a leer>
 
 Para ello, se necesita tener instalado:
 
