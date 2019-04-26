@@ -93,7 +93,7 @@ def draw_vectorscope():
 def draw_video_info(x_axis, y_axis):
 
     #Dibuja el rayo de color
-    video_info, = plt.plot(x_axis, y_axis, c="white", alpha=0.5)
+    video_info, = plt.plot(x_axis, y_axis, c="#ffffff", alpha=0.5)
     return video_info
 
 def next_frame(event):
