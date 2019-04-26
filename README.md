@@ -4,7 +4,7 @@ Vectorscopio para archivos .yuv y archivos provenientes de tramas SDI .sdi
 
 para ejecutarlo:
 
-python3 Vectorscope.py <archivo SDi de entrada> <Número de frames a leer>
+python3 Vectorscope.py archivo_SDi_de_entrada Número_de_frames_a_leer
 
 Para ello, se necesita tener instalado:
 
